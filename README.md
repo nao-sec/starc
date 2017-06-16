@@ -14,7 +14,7 @@
 
 ## Setup
 1. Setup OpenVPN Server
-Refer https://gist.github.com/koike/420a27b0c8c7df24fef3fcccefed7f7d
+- Refer https://gist.github.com/koike/420a27b0c8c7df24fef3fcccefed7f7d
 
 2. Install Virtual Box on Host
 - Please set PATH so that VBoxManage.exe can be used
