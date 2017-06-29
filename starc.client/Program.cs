@@ -13,12 +13,11 @@ namespace starc.client
     {
         static void Main(string[] args)
         {
-            Thread.Sleep(1000 * 30);
+            Thread.Sleep(1000 * 10);
 
             // Connect OpenVPN
             Console.WriteLine("[+] Connecting VPN...");
-            var user_dir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            Directory.SetCurrentDirectory(user_dir + @"\OpenVPN\config");
+            Directory.SetCurrentDirectory(@"E:\");
             var psi = new ProcessStartInfo()
             {
                 FileName = "openvpn.exe",
@@ -27,7 +26,8 @@ namespace starc.client
                 UseShellExecute = false
             };
             var ps = Process.Start(psi);
-            Thread.Sleep(1000 * 30);
+
+            Thread.Sleep(1000 * 10);
 
             // Start Capture
             Console.WriteLine("[+] Starting packet capture...");
@@ -40,6 +40,9 @@ namespace starc.client
                 UseShellExecute = false
             };
             ps = Process.Start(psi);
+
+            // Wait
+            Thread.Sleep(1000 * 10);
 
             // Access by IE
             Console.WriteLine("[+] Accessing by IE...");
@@ -80,11 +83,35 @@ namespace starc.client
             var is_executable = output.Contains("executable");
             if(is_executable)
             {
-                var sw = new StreamWriter(@"E:\file.txt", true, Encoding.UTF8);
+                var sw = new StreamWriter(@"E:\file_temp.txt", true, Encoding.UTF8);
+                sw.WriteLine(output);
+                sw.Close();
+                sw.Dispose();
+                DirectoryCopy(temp_dir, @"E:\temp");
+            }
+
+            var downloads_dir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
+            Directory.SetCurrentDirectory(downloads_dir);
+            psi = new ProcessStartInfo()
+            {
+                FileName = "file.exe",
+                Arguments = "*",
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+            ps = Process.Start(psi);
+            ps.WaitForExit();
+            output = ps.StandardOutput.ReadToEnd();
+            is_executable = output.Contains("executable");
+            if (is_executable)
+            {
+                var sw = new StreamWriter(@"E:\file_downloads.txt", true, Encoding.UTF8);
                 sw.WriteLine(output);
                 sw.Close();
                 sw.Dispose();
             }
+            DirectoryCopy(downloads_dir, @"E:\downloads");
 
             // Shutdown
             Console.WriteLine("[!] End all task!");
@@ -98,6 +125,26 @@ namespace starc.client
             ps = Process.Start(psi);
 
             return;
+        }
+
+        static void DirectoryCopy(string src, string dest)
+        {
+            var src_dir = new DirectoryInfo(src);
+            var dest_dir = new DirectoryInfo(dest);
+
+            if (dest_dir.Exists == false)
+            {
+                dest_dir.Create();
+                dest_dir.Attributes = src_dir.Attributes;
+            }
+            foreach (var file_info in src_dir.GetFiles())
+            {
+                file_info.CopyTo(dest_dir.FullName + @"\" + file_info.Name, true);
+            }
+            foreach (System.IO.DirectoryInfo directoryInfo in src_dir.GetDirectories())
+            {
+                DirectoryCopy(directoryInfo.FullName, dest_dir.FullName + @"\" + directoryInfo.Name);
+            }
         }
     }
 }

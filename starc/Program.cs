@@ -25,11 +25,9 @@ namespace starc
 
             // Set shared folder
             Console.WriteLine("[+] Setting shared folder...");
-            var dt = DateTime.Now;
-            var dt_str = dt.ToString();
-            dt_str = dt_str.Replace(" ", "_").Replace("/", "-").Replace(":", "-");
+            var dt = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var drive = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System));
-            var folder = drive + @"starc.log\" + dt_str;
+            var folder = drive + @"starc.log\" + dt;
             Directory.CreateDirectory(folder);
             var psi = new ProcessStartInfo()
             {
@@ -46,8 +44,15 @@ namespace starc
                 Console.WriteLine("[!] Error, can't set shared folder");
             }
 
+            // Copy OpenVPN config file -> shared file
+            // vpn.ovpn, ca.crt, client.crt, client.key
+            File.Copy(drive + @"starc.log\config\vpn.ovpn", folder + @"\vpn.ovpn", true);
+            File.Copy(drive + @"starc.log\config\ca.crt", folder + @"\ca.crt", true);
+            File.Copy(drive + @"starc.log\config\client.crt", folder + @"\client.crt", true);
+            File.Copy(drive + @"starc.log\config\client.key", folder + @"\client.key", true);
+
             // Write URL -> shared file
-            var filename = folder + "\\url.txt";
+            var filename = folder + @"\url.txt";
             var sw = new StreamWriter(filename, false, Encoding.UTF8);
             sw.Write(url);
             sw.Close();
@@ -71,9 +76,9 @@ namespace starc
             }
 
             // Waiting Guest Process
-            var is_end = false;
+            var end_flag = 0;
             var wait_time = 0;
-            while(!is_end)
+            while(end_flag < 3)
             {
                 // Check VM Status
                 psi = new ProcessStartInfo()
@@ -89,13 +94,13 @@ namespace starc
                 var output = ps.StandardOutput.ReadToEnd();
                 if(!output.Contains(vm_name))
                 {
-                    is_end = true;
+                    end_flag++;
                 }
                 Thread.Sleep(1000);
                 wait_time++;
                 if(wait_time > 10 * 60)
                 {
-                    is_end = true;
+                    end_flag = 3;
 
                     // shutdown
                     psi = new ProcessStartInfo()
@@ -130,6 +135,12 @@ namespace starc
                 Console.WriteLine("[!] Error, can't restore VM");
             }
 
+            // Delete OpenVPN config file
+            File.Delete(folder + @"\vpn.ovpn");
+            File.Delete(folder + @"\ca.crt");
+            File.Delete(folder + @"\client.crt");
+            File.Delete(folder + @"\client.key");
+
             // Commit files
             Console.WriteLine("[+] Committing files...");
             Directory.SetCurrentDirectory(drive + "starc.log");
@@ -145,7 +156,7 @@ namespace starc
             psi = new ProcessStartInfo()
             {
                 FileName = "git",
-                Arguments = "commit -a -m \"" + dt_str + " " + url + "\"",
+                Arguments = "commit -a -m \"" + dt + " " + url + "\"",
                 CreateNoWindow = true,
                 UseShellExecute = false
             };
@@ -167,7 +178,7 @@ namespace starc
                 Console.WriteLine("[!] Error, can't commit files");
             }
 
-            Console.WriteLine("[!] End all task!");
+            Console.WriteLine("[!] End all tasks!");
             return;
         }
     }
