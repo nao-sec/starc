@@ -14,7 +14,7 @@
 
 ## Setup
 1. Setup OpenVPN Server  
-Refer https://gist.github.com/koike/420a27b0c8c7df24fef3fcccefed7f7d  
+Refer ```https://gist.github.com/koike/420a27b0c8c7df24fef3fcccefed7f7d```  
 
 2. Install Virtual Box on Host  
 Please set PATH so that VBoxManage.exe can be used  
@@ -23,7 +23,7 @@ Please set PATH so that VBoxManage.exe can be used
 Create repository to store the data  
 Repository's name is "starc.log"  
 Please also set ssh key  
-Please clone directly below the drive (C:\starc.log)  
+Please clone directly below the drive (```C:\starc.log```)  
 
 4. Install Windows on VM  
 VM's name is "starc"  
@@ -33,7 +33,7 @@ Create very vulnerable VM
 
 5. Install OpenVPN Client on VM  
 Be sure to connect confirmation!  
-Please put a config file named vpn.ovpn under %UserProfile%\OpenVPN\config  
+Please put a config file named vpn.ovpn under ```%UserProfile%\OpenVPN\config```  
 
 6. Install Wireshark on VM  
 Please set PATH so that tshark.exe can be used  
@@ -50,7 +50,7 @@ Delete drag and drop setting
 Delete share folder setting  
 
 11. Create snapshot of VM  
-Snapshot's name is "setuped"  
+Snapshot's name is "```setuped```"  
 
 ## Usage
 ```
