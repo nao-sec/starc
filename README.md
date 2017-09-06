@@ -26,14 +26,14 @@ Please also set ssh key
 Please clone directly below the drive (```C:\starc.log```)  
 
 4. Install Windows on VM  
-VM's name is "starc"  
+VM's name is "```starc```"  
 No Login Password  
 No UAC  
 Create very vulnerable VM  
 
 5. Install OpenVPN Client on VM  
 Be sure to connect confirmation!  
-Please put a config file named vpn.ovpn under ```%UserProfile%\OpenVPN\config```  
+Please put a config file named vpn.ovpn under ```C:\starc.log\config``` on Host  
 
 6. Install Wireshark on VM  
 Please set PATH so that tshark.exe can be used  
