@@ -87,8 +87,8 @@ namespace starc.client
                 sw.WriteLine(output);
                 sw.Close();
                 sw.Dispose();
-                DirectoryCopy(temp_dir, @"E:\temp");
             }
+            DirectoryCopy(temp_dir, @"E:\temp");
 
             var downloads_dir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
             Directory.SetCurrentDirectory(downloads_dir);
