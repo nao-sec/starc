@@ -1,11 +1,11 @@
 # StarC
-```Simple``` High-interactive client Honeypot
+Simple high-interactive honeypot for traffic analysis of Drive-by Download
 
 ## Require
 - Windows
   - Host
   - Guest
-    - Windows 7
+    - Windows
 - Virtual Box
 - OpenVPN
   - Server
@@ -18,7 +18,7 @@
 1. Setup OpenVPN Server  
 
 2. Install Virtual Box on Host  
-Please set PATH so that VBoxManage.exe can be used  
+Please set PATH so that ```VBoxManage.exe``` can be used  
 
 3. Install Git for Windows on Host  
 Create repository to store the data  
