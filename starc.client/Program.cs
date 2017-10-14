@@ -27,7 +27,18 @@ namespace starc.client
             };
             var ps = Process.Start(psi);
 
-            Thread.Sleep(1000 * 10);
+            Thread.Sleep(1000 * 20);
+
+            // Start Fiddler
+            Console.WriteLine("[+] Starting Fiddler...");
+            psi = new ProcessStartInfo()
+            {
+                FileName = "fiddler.exe",
+                Arguments = "/quiet",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            ps = Process.Start(psi);
 
             // Start Capture
             Console.WriteLine("[+] Starting packet capture...");
@@ -42,7 +53,7 @@ namespace starc.client
             ps = Process.Start(psi);
 
             // Wait
-            Thread.Sleep(1000 * 10);
+            Thread.Sleep(1000 * 30);
 
             // Access by IE
             Console.WriteLine("[+] Accessing by IE...");
@@ -53,7 +64,7 @@ namespace starc.client
             Process.Start(url);
 
             // Wait
-            Thread.Sleep(1000 * 60 * 5);
+            Thread.Sleep(1000 * 60 * 3);
 
             // Screenshot
             Console.WriteLine("[+] Taking screenshot...");
@@ -64,6 +75,48 @@ namespace starc.client
                 g.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
             }
             bmp.Save(@"screenshot.png", ImageFormat.Png);
+
+            // Stop & Save Fiddler
+            Console.WriteLine("[+] Stop & Save Fiddler...");
+            psi = new ProcessStartInfo()
+            {
+                FileName = "execaction",
+                Arguments = "stop",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            ps = Process.Start(psi);
+            ps.WaitForExit();
+            Thread.Sleep(1000);
+            psi = new ProcessStartInfo()
+            {
+                FileName = "execaction",
+                Arguments = "dump",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            ps = Process.Start(psi);
+            ps.WaitForExit();
+            Thread.Sleep(1000 * 3);
+
+            // Kill Fiddler
+            Console.WriteLine("[+] Killing Fiddler...");
+            psi = new ProcessStartInfo()
+            {
+                FileName = "taskkill",
+                Arguments = "/f /im fiddler.exe",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            ps = Process.Start(psi);
+            ps.WaitForExit();
+            Thread.Sleep(1000 * 3);
+
+            // Copy saz
+            Console.WriteLine("[+] Copying saz...");
+            var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            File.Copy(profile + @"\Documents\Fiddler2\Captures\dump.saz", @"fiddler.saz");
+            Thread.Sleep(1000 * 3);
 
             // Check exist exec
             Console.WriteLine("[+] Checking exist executable file...");

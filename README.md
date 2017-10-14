@@ -1,4 +1,5 @@
 # StarC
+```Simple``` High-interactive client Honeypot
 
 ## Require
 - Windows
@@ -10,11 +11,11 @@
   - Server
   - Client Software
 - Wireshark
+- Fiddler
 - Git
 
 ## Setup
 1. Setup OpenVPN Server  
-Refer https://gist.github.com/koike/420a27b0c8c7df24fef3fcccefed7f7d  
 
 2. Install Virtual Box on Host  
 Please set PATH so that VBoxManage.exe can be used  
@@ -38,18 +39,22 @@ Please put a config file named vpn.ovpn under ```C:\starc.log\config``` on Host
 6. Install Wireshark on VM  
 Please set PATH so that ```tshark.exe``` can be used  
 
-7. Make initial setting of Internet Explorer on VM
+7. Install Fiddler on VM  
+Please set PATH so that ```fiddler.exe``` & ```execaction.exe``` can be used  
+Please make the appropriate settings, ```Decrypt HTTPS traffic```  
 
-8. Delete all files under ```%temp%``` as much as possible on VM
+8. Make initial setting of Internet Explorer on VM
 
-9. Set ```starc.clirnt.exe``` to startup on VM
+9. Delete all files under ```%temp%``` as much as possible on VM
 
-10. Change VM settings  
+10. Set ```starc.client.exe``` to startup on VM
+
+11. Change VM settings  
 Delete clipboard share setting  
 Delete drag and drop setting  
 Delete share folder setting  
 
-11. Create snapshot of VM  
+12. Create snapshot of VM  
 Snapshot's name is "```setuped```"  
 
 ## Usage
