@@ -1,5 +1,5 @@
 # StarC
-Simple high-interactive honeypot for traffic analysis of Drive-by Download
+Simple high-interactive client honeypot for traffic analysis of Drive-by Download
 
 ## Require
 - Windows
